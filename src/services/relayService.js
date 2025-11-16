@@ -1,5 +1,6 @@
 import db from '../config/db.js';
 import Relay from '../models/relay.js';
+import websocketService from '../services/websocketService.js';
 
 
 export default class RelayService {
@@ -8,15 +9,17 @@ export default class RelayService {
             `INSERT INTO relays (name, gpio_pin, active)
        VALUES (?, ?, 0)`
         ).run(name, gpio_pin);
+        websocketService.broadcastRelays();
         return new Relay(result);
     }
 
-    static save(relay) {
+    static save(relay, name, gpio_pin, active) {
         db.prepare(
             `UPDATE relays SET name = ?, gpio_pin = ?, active = ?
        WHERE id = ?`,
-        ).run(relay.name, relay.gpio_pin, relay.active, relay.id)
+        ).run(name, gpio_pin, active, relay.id);
         if (relay.gpio) relay.gpio.writeSync(relay.active);
+        websocketService.broadcastRelays();
         return relay;
     }
 
@@ -24,5 +27,6 @@ export default class RelayService {
         if (relay.gpio) relay.gpio.writeSync(0);
         // delete schedules
         db.prepare(`DELETE FROM relays WHERE id = ?`).run(relay.id);
+        websocketService.broadcastRelays();
     }
 }

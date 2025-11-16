@@ -15,6 +15,8 @@
         "@vitejs/plugin-vue": "^6.0.1",
         "axios": "^1.13.2",
         "better-sqlite3": "^8.0.0",
+        "bootstrap": "^5.3.8",
+        "bootstrap-icons": "^1.13.1",
         "dotenv": "^16.0.0",
         "express": "^4.18.2",
         "onoff": "^6.0.0",

@@ -1,8 +1,5 @@
-import * as Schedule from '../models/schedule.js';
-import * as ScheduleService from '../services/scheduleService.js';
-import Ws from '../services/websocketService.js';
-import * as Relay from '../models/relay.js';
 
+export default class ScheduleController { }
 export function list(req, res) {
     res.json(Schedule.allSchedules());
 }

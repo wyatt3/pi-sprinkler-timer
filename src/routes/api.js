@@ -1,6 +1,6 @@
 import express from 'express';
-import { RelayController } from '../controllers/relayController.js';
-import * as ScheduleController from '../controllers/scheduleController.js';
+import RelayController from '../controllers/relayController.js';
+import ScheduleController from '../controllers/scheduleController.js';
 
 const router = express.Router();
 

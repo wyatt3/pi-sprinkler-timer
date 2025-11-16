@@ -1,6 +1,11 @@
 import { Server as IOServer } from 'socket.io';
+import db from '../config/db.js';
 
-export default class websocketService {
+class websocketService {
+    constructor() {
+        this.io = null;
+    }
+
     initSocket(server) {
         if (this.io) return this.io;
         this.io = new IOServer(server, { cors: { origin: '*' } });
@@ -9,13 +14,18 @@ export default class websocketService {
         });
     }
 
-    broadcastRelays(relays) {
+    broadcastRelays() {
         if (!this.io) return;
+        const relays = db.prepare('SELECT * FROM relays ORDER BY id').all();
         this.io.emit('relays:update', relays);
     }
 
-    broadcastSchedules(schedules) {
+    broadcastSchedules() {
         if (!this.io) return;
+        const schedules = db.prepare('SELECT * FROM schedules ORDER BY id').all();
         this.io.emit('schedules:update', schedules);
     }
 }
+
+const instance = new websocketService();
+export default instance;
